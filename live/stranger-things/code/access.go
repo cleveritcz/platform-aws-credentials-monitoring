@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 	"time"
-
-	slack "github.com/ashwanthkumar/slack-go-webhook"
+        "net/smtp"
+	
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -16,10 +16,7 @@ import (
 
 var (
 	username   string
-	channel    string
 	guard      string
-	icon       string
-	webhookURL string
 )
 
 func init() {
@@ -29,20 +26,8 @@ func init() {
 		log.Fatal("the HAZARD environment variable is not set")
 	}
 
-	if channel, ok = os.LookupEnv("CHANNEL"); !ok || channel == "" {
-		log.Fatal("the CHANNEL environment variable is not set")
-	}
-
 	if guard, ok = os.LookupEnv("GUARD"); !ok || guard == "" {
 		log.Fatal("the GUARD environment variable is not set")
-	}
-
-	if icon, ok = os.LookupEnv("ICON"); !ok || icon == "" {
-		log.Fatal("the ICON environment variable is not set")
-	}
-
-	if webhookURL, ok = os.LookupEnv("WEB_HOOK_URL"); !ok || webhookURL == "" {
-		log.Fatal("the WEB_HOOK_URL environment variable is not set")
 	}
 }
 
@@ -52,16 +37,23 @@ type RestrictedData struct {
 }
 
 func Notification(message string) {
-	payload := slack.Payload{
-		Text:      message,
-		Username:  guard,
-		IconEmoji: icon,
-		Channel:   channel,
-	}
-	err := slack.Send(webhookURL, "", payload)
+
+	// Sender data.
+        from := "from@gmail.com"
+        password := "<Email Password>"
+	
+        msg := []byte("From: aws@info.cz\r\n" +
+            "To: martin.smola@centrum.cz\r\n" +
+            "Subject: guard + "-" + message\r\n\r\n" +
+            "Email body\r\n")
+	
 	if len(err) > 0 {
 		fmt.Printf("error: %s\n", err)
 	}
+	
+        smtpHost := "smtp.gmail.com"
+        smtpPort := "587"	
+        
 }
 
 func getAgeKey(username string) float64 {
@@ -104,6 +96,8 @@ func alert(r RestrictedData) {
 	case r.age < 25:
 		message = "is near to be out of control."
 	case r.age >= 25:
+		message = "is out of control. We must rotate the key!"
+	case r.age >= 92:
 		message = "is out of control. We must rotate the key!"
 	}
 
