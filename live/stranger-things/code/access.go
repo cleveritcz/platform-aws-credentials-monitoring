@@ -37,7 +37,10 @@ type RestrictedData struct {
 }
 
 func Notification(message string) {
-
+	
+        smtpHost := "email-smtp.us-east-2.amazonaws.com"
+        smtpPort := "587"
+	
 	// Sender data.
         from := "from@gmail.com"
         password := "<Email Password>"
@@ -50,10 +53,6 @@ func Notification(message string) {
 	if len(err) > 0 {
 		fmt.Printf("error: %s\n", err)
 	}
-	
-        smtpHost := "smtp.gmail.com"
-        smtpPort := "587"	
-        
 }
 
 func getAgeKey(username string) float64 {
