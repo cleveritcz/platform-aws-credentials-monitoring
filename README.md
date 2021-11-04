@@ -4,7 +4,7 @@ The aim of this project is explain how to notify AWS users when they need to rot
 You can read in more detail in the next [article](https://medium.com/empathybroker/how-to-monitor-the-age-of-your-aws-credentials-using-terraform-go-aws-lambda-and-slack-a9cc0ad322a)
 
 # Requisites
-* Terraform v0.11.7
+* Terraform v1.0.10
 * Terragrunt v0.14.2
 * An AWS-account-ID
 * Slack-Webhook-URL
