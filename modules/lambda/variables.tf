@@ -11,7 +11,7 @@ variable "handler" {
 }
 
 variable "runtime" {
-  default = "python3.6"
+  default = "python3.8"
 }
 
 variable "filename" {
@@ -20,13 +20,13 @@ variable "filename" {
 
 variable "environment" {
   description = "Environment configuration for the Lambda function"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
 variable "tags" {
   description = "You can use tags to group and filter your functions"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
@@ -43,12 +43,12 @@ variable "memory_size" {
 
 
 variable "security_group_ids" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "subnet_ids" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
